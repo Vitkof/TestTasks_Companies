@@ -1,7 +1,8 @@
 Your program should get two parameters from command line:
 - string of size N^2, that describes square matrix of characters N*N;
 - string that describes given word.
-The first string is converting to matrix using the following rule. String "QWEASDZXC" forms the matrix:
+The first string is converting to matrix using the following rule. String "QWEASDZXC" forms the matrix:  
+
  ``['Q','W','E',  ``
  
   ``'A','S','D',  ``
@@ -18,3 +19,5 @@ Send us in email:
 - spent time
 
 Be sure to optimize the program code, but in such a way that it does not take much time.
+
+![board](ws.jpg "word_search")

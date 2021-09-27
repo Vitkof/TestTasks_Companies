@@ -1,0 +1,38 @@
+<form novalidate #form="ngForm" (submit)="onSubmit(form)">
+  <input type="hidden" name="id"
+         [value]="svc.formData.id" />
+  <div class="form-group">
+    <label>NAME</label>
+    <input class="form-control form-control-lg" placeholder="Full Name"
+           name="name" #name="ngModel" [(ngModel)]="svc.formData.name"
+           required minlength="2" maxlength="100"
+           [class.invalid]="name.invalid && name.touched" />
+  </div>
+  <div class="form-group">
+    <label>MOBILE PHONE</label>
+    <input type="tel" 
+           class="form-control form-control-lg" placeholder="15 Digit Phone Number"
+           name="mobilephone" #mobilephone="ngModel" [(ngModel)]="svc.formData.mobilephone"
+           required minlength="12" maxlength="15"
+           [class.invalid]="mobilephone.invalid && mobilephone.touched" />
+    <small>Format: +(37529)*******</small>
+  </div>
+  <div class="form-group">
+    <label>JOB TITLE</label>
+    <input class="form-control form-control-lg" placeholder="Title up to 50 characters"
+           name="jobtitle" #jobtitle="ngModel" [(ngModel)]="svc.formData.jobtitle"
+           required minlength="2" maxlength="50"
+           [class.invalid]="jobtitle.invalid && jobtitle.touched"/>
+  </div>
+  <div class="form-group">
+    <label>BIRTH DATE</label>
+    <input type="date" class="form-control form-control-lg" placeholder="дд.мм.гггг"
+           name="birthdate" #birthdate="ngModel" [ngModel]="svc.formData.birthdate | date:'yyyy-MM-dd'"
+           (ngModelChange)="svc.formData.birthdate = $event"
+           required 
+           [class.invalid]="birthdate.invalid && birthdate.touched"/>
+  </div>
+  <div class="form-group">
+    <button class="btn btn-info btn-lg btn-block" type="submit" [disabled]="form.invalid">SUBMIT</button>
+  </div>
+</form>

@@ -1,0 +1,32 @@
+#descr_list {
+  background-color: #6ad5e6;
+  padding: 0 10px;
+  width: 110px;
+}
+
+#list {
+  background-color: white;
+  padding:2px 0;
+}
+
+#tb {
+  border: 3px solid #8ccee6;
+  border-radius: 10px;
+  padding:20px;
+}
+
+#thead {
+  background-color: lightgray;
+  border-bottom: 2.05px solid dimgray;
+  font-size: 13px;
+  font-style:italic;
+}
+
+th {
+  font-weight: bold;
+}
+
+.listrow {
+  background-color: #e7fdff;
+  padding-left: 10px;
+}

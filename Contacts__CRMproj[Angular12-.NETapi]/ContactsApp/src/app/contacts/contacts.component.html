@@ -1,0 +1,34 @@
+<div class="jumbotron py-3">
+  <h1 class="display-4 text-center">
+    Contact Register
+  </h1>
+</div>
+<div class="row">
+  <div class="col-md-6">
+    <app-contact-form></app-contact-form>
+  </div>
+  <div class="col-md-6" id="list">
+    <div id="descr_list"><span>List of Contacts:</span></div>
+    <table class="table" id="tb">
+      <thead  id="thead">
+        <tr>
+          <th>Name</th>
+          <th>Mobile Phone</th>
+          <th>Job Title</th>
+          <th>Birth Date</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let ctc of svc.contacts" class="listrow">
+          <td (click)="fillForm(ctc)">{{ctc.name}}</td>
+          <td (click)="fillForm(ctc)">{{ctc.mobilephone}}</td>
+          <td (click)="fillForm(ctc)">{{ctc.jobtitle}}</td>
+          <td (click)="fillForm(ctc)">{{ctc.birthdate | date:'dd.MM.yyyy'}}</td>
+          <td><i class="far fa-trash-alt fa-lg text-danger" (click)="onDelete(ctc.id)"></i></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+

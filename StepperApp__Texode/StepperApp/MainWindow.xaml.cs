@@ -24,5 +24,13 @@ namespace StepperApp__Texode
         {
             InitializeComponent();
         }
+
+        private void BtnDetailsClick(object sender, RoutedEventArgs e)
+        {
+        }
+
+        private void BtnSaveClick(object sender, RoutedEventArgs e)
+        {
+        }
     }
 }

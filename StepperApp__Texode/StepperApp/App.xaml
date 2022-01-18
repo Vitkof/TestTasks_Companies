@@ -1,8 +1,9 @@
-﻿<Application x:Class="StepperApp__Texode.App"
+﻿<Application x:Class="StepperApp.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:StepperApp__Texode"
-             StartupUri="MainWindow.xaml">
+             xmlns:cmd="clr-namespace:StepperApp.Infrastructure.Commands"
+             xmlns:local="clr-namespace:StepperApp"
+             StartupUri="Views/Windows/MainWindow.xaml">
     <Application.Resources>
          
     </Application.Resources>

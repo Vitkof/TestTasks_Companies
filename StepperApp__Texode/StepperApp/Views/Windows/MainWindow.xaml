@@ -1,14 +1,21 @@
-﻿<Window x:Class="StepperApp__Texode.MainWindow"
+﻿<Window x:Class="StepperApp.Views.Windows.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:StepperApp__Texode"
+        xmlns:fa="http://schemas.fontawesome.com/icons/"
+        xmlns:cmd="clr-namespace:StepperApp.Infrastructure.Commands"
+        xmlns:vm="clr-namespace:StepperApp.ViewModels"
+        xmlns:local="clr-namespace:StepperApp.Views.Windows"
         xmlns:col="clr-namespace:System.Collections;assembly=mscorlib"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
-        <DataGrid x:Name="UsersGrid" AutoGenerateColumns="False" Width="370" HorizontalAlignment="Left" IsReadOnly="True" SelectionMode="Single" >
+        Title="MainWindow"
+        Height="500" Width="900">
+    <Window.DataContext>
+        <vm:MainWindowVM/>
+    </Window.DataContext>
+    <Grid x:Name="MainGrid">
+        <DataGrid x:Name="UsersGrid" AutoGenerateColumns="False" HorizontalAlignment="Left" IsReadOnly="True" SelectionMode="Single" >
             <DataGrid.Columns>
                 <DataGridTemplateColumn Header="Full Name" Width="130" ClipboardContentBinding="{x:Null}">
                     <DataGridTemplateColumn.CellTemplate>
@@ -32,8 +39,9 @@
         </DataGrid>
 
         <Grid x:Name="CoordinateGrid">
+            <fa:ImageAwesome Icon="Regular_File" Height="26" Margin="10, 0, 10, 0" Foreground="BlueViolet"/>
             <TextBlock HorizontalAlignment="Center" Margin="200,60,0,0"  Text="Hello!" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="36" FontFamily="Algerian"  FontStyle="Normal"/>
-            <TextBlock HorizontalAlignment="Left" Margin="400,144,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="21" Width="463" FontFamily="Calibri" Height="50" LineStackingStrategy="BlockLineHeight" LineHeight="18">
+            <TextBlock HorizontalAlignment="Left" Margin="400,144,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="18" Width="463" FontFamily="Calibri" Height="50" LineStackingStrategy="BlockLineHeight" LineHeight="18">
                 <Run Text="Detailed information will be displayed here."/><LineBreak/><Run Text="Statistics on the steps taken  for the month. "/>
             </TextBlock>
             <TextBlock HorizontalAlignment="Left" Margin="400,200,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="28" Width="463" FontFamily="Chiller" Height="174" Text="Click on the User to see more details."/>

@@ -1,6 +1,7 @@
 ﻿<Application x:Class="StepperApp.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="clr-namespace:StepperApp.ViewModels"
              xmlns:cmd="clr-namespace:StepperApp.Infrastructure.Commands"
              xmlns:local="clr-namespace:StepperApp"
              StartupUri="Views/Windows/MainWindow.xaml">

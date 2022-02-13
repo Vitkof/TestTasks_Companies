@@ -19,15 +19,18 @@ namespace StepperApp.Services
             {
                 var res = ListUsersFromFiles = new List<UserModelFromJson>();
                 string[] namesFiles = Directory.GetFiles(_dataSrcAdress, "*.json");
+                namesFiles.QuickSort(0, namesFiles.Length - 1);
 
-                for (byte i = 0; i < namesFiles.Length;)
+                byte c = 1;
+                for (byte i = 0; i < namesFiles.Length; i++, c++)
                 {
                     var read = File.ReadAllText(namesFiles[i]);
-                    res = JsonConvert.DeserializeObject<List<UserModelFromJson>>(read);
+                    var usersDay = JsonConvert.DeserializeObject<List<UserModelFromJson>>(read);
 
-                    foreach (var userModelFromJson in res)
+                    foreach (var userModelFromJson in usersDay)
                     {
-                        userModelFromJson.Day = $"Day {++i}";
+                        userModelFromJson.Day = $"Day {c}";
+                        res.Add(userModelFromJson);
                     }
                 }
                 return res;

@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,7 +11,9 @@ namespace StepperApp.Models
 {
     internal interface IUsersModel
     {
-        ReadOnlyCollection<User> Users { get; set; }
+        ReadOnlyObservableCollection<User> Users { get; }
+        ICollectionView UsersView { get; }
+        string UsersFilter { get; set; }
         event EventHandler<UserEventArgs> UserUpdated;
         void UpdateUser(IUser user);
     }

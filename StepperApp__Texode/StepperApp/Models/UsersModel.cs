@@ -21,7 +21,7 @@ namespace StepperApp.Models
         internal UsersModel(IDataService dataSvc,
                             IUserService userSvc)
         {
-            _readUsers = new ReadOnlyObservableCollection<User>(_users);
+            Users = new ReadOnlyObservableCollection<User>(_users);
 
             var getAllUsersFromFiles = dataSvc.GetData();
             if (getAllUsersFromFiles != null)

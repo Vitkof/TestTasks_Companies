@@ -10,9 +10,11 @@ namespace StepperApp.Models
 {
     public class UsersModel : Notifier, IUsersModel
     {
-        private ObservableCollection<User> _users = new();
+        private readonly ObservableCollection<User> _users = new();
         private ReadOnlyObservableCollection<User> _readUsers;
         private CollectionViewSource _usersViewSource;
+        private readonly IDataService _dataService;
+        private readonly IUserService _userService;
 
         public event EventHandler<UserEventArgs> UserUpdated = delegate { };
 
@@ -21,18 +23,9 @@ namespace StepperApp.Models
         internal UsersModel(IDataService dataSvc,
                             IUserService userSvc)
         {
+            _dataService = dataSvc;
+            _userService = userSvc;
             Users = new ReadOnlyObservableCollection<User>(_users);
-
-            var getAllUsersFromFiles = dataSvc.GetData();
-            if (getAllUsersFromFiles != null)
-            {
-                var UsersDictionary = dataSvc.GetUsersDict(getAllUsersFromFiles);
-                var getAllUsersNames = userSvc.GetAllNames(UsersDictionary);
-                foreach (string name in getAllUsersNames)
-                {
-                    _users.Add(userSvc.GetUserByName(UsersDictionary, name));
-                }
-            }
         }
 
 
@@ -84,6 +77,20 @@ namespace StepperApp.Models
         }
         #endregion
 
+
+        public void LoadData()
+        {
+            var allUsersFromFiles = _dataService.GetData();
+            if (allUsersFromFiles != null)
+            {
+                var usersDictionary = _dataService.GetUsersDict(allUsersFromFiles);
+                var allUsersNames = _userService.GetAllNames(usersDictionary);
+                foreach (string name in allUsersNames)
+                {
+                    _users.Add(_userService.GetUserByName(usersDictionary, name));
+                }
+            }
+        }
 
         public void UpdateUser(IUser user)
         {

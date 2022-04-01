@@ -16,6 +16,7 @@ namespace StepperApp.Models
         string UsersFilter { get; set; }
         event EventHandler<UserEventArgs> UserUpdated;
         void UpdateUser(IUser user);
+        void LoadData();
     }
 
 

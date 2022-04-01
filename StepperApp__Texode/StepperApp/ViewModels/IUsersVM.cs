@@ -11,5 +11,6 @@ namespace StepperApp.ViewModels
         ReadOnlyObservableCollection<User> Users { get; }
 
         void UpdateUser();
+        void LoadData();
     }
 }

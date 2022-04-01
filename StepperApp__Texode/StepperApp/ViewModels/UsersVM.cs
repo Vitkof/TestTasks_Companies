@@ -18,7 +18,7 @@ namespace StepperApp.ViewModels
         private readonly IUsersModel _model;
         private readonly ICommand _updateCmd;
         private readonly ICommand _loadDataCmd;
-        private readonly ICommand _saveCmd;
+        private readonly ICommand _saveUserCmd;
 
 
         //ctor
@@ -28,13 +28,13 @@ namespace StepperApp.ViewModels
             _model.UserUpdated += model_UserUpdated;
             _updateCmd = new UpdateCmd(this);
             _loadDataCmd = new LoadDataCmd(this);
-            _saveCmd = new SaveCmd(this);
+            _saveUserCmd = new SaveUserCmd(this);
         }
 
         //prop
         public ICommand UpdateCmd => _updateCmd;
         public ICommand LoadDataCmd => _loadDataCmd;
-        public ICommand SaveCmd => _saveCmd;
+        public ICommand SaveCmd => _saveUserCmd;
         public ICollectionView UsersView => _model.UsersView;
         public ReadOnlyObservableCollection<User> Users => _model.Users;
 
@@ -135,6 +135,11 @@ namespace StepperApp.ViewModels
             return (from u in Users
                     where u.FullName == userFName
                     select u).FirstOrDefault();
+        }
+
+        public void LoadData()
+        {
+            _model.LoadData();
         }
 
         public void UpdateUser()

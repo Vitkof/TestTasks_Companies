@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-
-namespace StepperApp.DAL.Entities
+﻿namespace StepperApp.DAL.Entities
 {
-    public class UserModelFromJson : UserModelWithoutName
+    public class UserModelFromJson : UserModelWithoutNameSteps
     {
         public string User { get; set; }
+        public int Steps { get; set; }
     }
 }

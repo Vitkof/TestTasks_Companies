@@ -1,16 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-
+using System.Text.Json.Serialization;
 
 namespace StepperApp.DAL.Entities
 {
-    public class UserModelToJson
+    public class UserModelToJson : User
     {
-        public string FullName { get; set; }
-        public int AverageSteps { get; set; }
-        public int MaxSteps { get; set; }
-        public int MinSteps { get; set; }
-
-        public List<UserModelWithoutName> UsersModelWithoutName { get; set; }
+        [JsonIgnore]
+        public override Guid Id { get; set; }
+        [JsonPropertyOrder(2)]
+        public List<UserModelWithoutNameSteps> Days { get; set; }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using StepperApp.DAL;
 using StepperApp.Models;
+using System;
 
 namespace StepperApp.ViewModels
 {
@@ -11,6 +12,8 @@ namespace StepperApp.ViewModels
         private int _maxSteps;
         private Status _estimateStatus;
 
+
+        public Guid Id { get; set; }
 
         public string FullName
         {
@@ -73,6 +76,14 @@ namespace StepperApp.ViewModels
 
 
         public void Update(IUser user)
+        {
+            FullName = user.FullName;
+            Average = user.Average;
+            Min = user.Min;
+            Max = user.Max;
+        }
+
+        public void Save(IUser user)
         {
             FullName = user.FullName;
             Average = user.Average;

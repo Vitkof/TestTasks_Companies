@@ -23,7 +23,7 @@ namespace StepperApp.Infrastructure.Commands
 
         public override void Execute(object param)
         {
-            //logic here
+            _vm.SaveUser();
         }
     }
 }

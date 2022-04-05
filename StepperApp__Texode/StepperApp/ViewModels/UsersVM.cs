@@ -34,7 +34,7 @@ namespace StepperApp.ViewModels
         //prop
         public ICommand UpdateCmd => _updateCmd;
         public ICommand LoadDataCmd => _loadDataCmd;
-        public ICommand SaveCmd => _saveUserCmd;
+        public ICommand SaveUserCmd => _saveUserCmd;
         public ICollectionView UsersView => _model.UsersView;
         public ReadOnlyObservableCollection<User> Users => _model.Users;
 
@@ -140,6 +140,11 @@ namespace StepperApp.ViewModels
         public void LoadData()
         {
             _model.LoadData();
+        }
+
+        public void SaveUser()
+        {
+            _model.SaveUser(SelectedUser);
         }
 
         public void UpdateUser()

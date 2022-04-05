@@ -12,5 +12,6 @@ namespace StepperApp.ViewModels
 
         void UpdateUser();
         void LoadData();
+        void SaveUser();
     }
 }

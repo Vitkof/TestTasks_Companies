@@ -1,11 +1,7 @@
 ﻿using StepperApp.DAL;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace StepperApp.Models
 {
@@ -16,6 +12,7 @@ namespace StepperApp.Models
         string UsersFilter { get; set; }
         event EventHandler<UserEventArgs> UserUpdated;
         void UpdateUser(IUser user);
+        void SaveUser(IUser user);
         void LoadData();
     }
 

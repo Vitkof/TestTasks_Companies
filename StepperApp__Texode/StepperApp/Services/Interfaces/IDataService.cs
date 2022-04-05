@@ -1,4 +1,5 @@
-﻿using StepperApp.DAL.Entities;
+﻿using StepperApp.DAL;
+using StepperApp.DAL.Entities;
 using System.Collections.Generic;
 
 
@@ -8,5 +9,6 @@ namespace StepperApp.Services.Interfaces
     {
         List<UserModelFromJson> GetData();
         Dictionary<string, List<int>> GetUsersDict(List<UserModelFromJson> users);
+        string Serialize(User user);
     }
 }

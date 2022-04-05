@@ -1,9 +1,11 @@
 ﻿using StepperApp.DAL;
 using StepperApp.Services.Interfaces;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
+using System.Windows;
 using System.Windows.Data;
 
 namespace StepperApp.Models
@@ -15,6 +17,7 @@ namespace StepperApp.Models
         private CollectionViewSource _usersViewSource;
         private readonly IDataService _dataService;
         private readonly IUserService _userService;
+        private Dictionary<string, List<int>> _usersDictionary;
 
         public event EventHandler<UserEventArgs> UserUpdated = delegate { };
 
@@ -80,23 +83,41 @@ namespace StepperApp.Models
 
         public void LoadData()
         {
+            LoadDataInternal();
+        }
+        private void LoadDataInternal()
+        {
             var allUsersFromFiles = _dataService.GetData();
             if (allUsersFromFiles != null)
             {
-                var usersDictionary = _dataService.GetUsersDict(allUsersFromFiles);
-                var allUsersNames = _userService.GetAllNames(usersDictionary);
+                _usersDictionary = _dataService.GetUsersDict(allUsersFromFiles);
+                var allUsersNames = _userService.GetAllNames(_usersDictionary);
                 foreach (string name in allUsersNames)
                 {
-                    _users.Add(_userService.GetUserByName(usersDictionary, name));
+                    _users.Add(_userService.GetUserByName(_usersDictionary, name));
                 }
             }
         }
 
         public void UpdateUser(IUser user)
         {
+            UpdateUserInternal(user);
+        }
+        private void UpdateUserInternal(IUser user)
+        {
             GetUserByName(user.FullName).Update(user);
             UserUpdated(this,
                 new UserEventArgs(user));
+        }
+
+        public void SaveUser(IUser user)
+        {
+            SaveUserInternal(user);
+        }
+        private void SaveUserInternal(IUser us)
+        {
+            var user = GetUserByName(us.FullName);
+            _ = MessageBox.Show(_userService.WriteToJson(_dataService, user));
         }
 
         private User GetUserByName(string fname)

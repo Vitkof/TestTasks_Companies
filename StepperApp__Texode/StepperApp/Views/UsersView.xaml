@@ -1,0 +1,115 @@
+﻿<UserControl x:Class="StepperApp.Views.UsersView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:c="clr-namespace:StepperApp.Infrastructure.Converters"
+             xmlns:local="clr-namespace:StepperApp.Views"
+             xmlns:vm="clr-namespace:StepperApp.ViewModels"
+             xmlns:cm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
+             mc:Ignorable="d" 
+             d:DesignWidth="800" d:DesignHeight="400" >
+
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding LoadDataCmd}"/>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+    <UserControl.Resources>
+        <c:BoolVisibilityConverter x:Key="BoolVisibility"/>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+        <GroupBox Header="Search" Margin="3 1">
+            <GroupBox.Resources>
+                <CollectionViewSource x:Key="UsersView"
+                                      Source="{Binding Users}">
+                    <CollectionViewSource.SortDescriptions>
+                        <cm:SortDescription PropertyName="FullName"/>
+                    </CollectionViewSource.SortDescriptions>
+                </CollectionViewSource>
+            </GroupBox.Resources>
+            <DockPanel>
+                <TextBox DockPanel.Dock="Top" Text="{Binding UsersFilter, UpdateSourceTrigger=PropertyChanged}" Background="#FFE0E8"/>
+                <UniformGrid DockPanel.Dock="Bottom" Rows="1" Margin="3">
+                    <Button Content="Detail" Margin="4 3" 
+                            Command="{Binding RenderCmd}"
+                            CommandParameter="{Binding Data}"
+                            DataContext="{Binding CoordinateGridVM}">
+
+                    </Button>
+                           
+                    <Button Content="Save" Margin="4 3" 
+                            Command="{Binding SaveUserCmd}"
+                            CommandParameter="{Binding SelectedUser}"/>
+                </UniformGrid>
+                <DataGrid x:Name="UsersGrid" ItemsSource="{Binding UsersView}" 
+                          SelectedValue="{Binding SelectedValue, Mode=OneWayToSource}" SelectedValuePath="FullName"
+                          AutoGenerateColumns="False" HorizontalAlignment="Left" IsReadOnly="True" SelectionMode="Single" >
+                    <DataGrid.ColumnHeaderStyle>
+                        <Style TargetType="{x:Type DataGridColumnHeader}">
+                            <Setter Property="BorderThickness" Value="1 1 1 1"/>
+                            <Setter Property="Margin" Value="-1,-1,0,0" />
+                            <Setter Property="FontWeight"  Value="Bold" />
+                            <Setter Property="HorizontalContentAlignment" Value="Center" />
+                        </Style>
+                    </DataGrid.ColumnHeaderStyle>
+                    <DataGrid.Columns>
+                        <DataGridTemplateColumn Header="Full Name" Width="130" >
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Button Content="{Binding FullName}" HorizontalAlignment="Left" BorderBrush="Transparent" Background="Transparent" />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTextColumn Header="Average" Width="60" Binding="{Binding Average}" x:Name="TextColumnB" >
+                            <DataGridTextColumn.ElementStyle>
+                                <Style>
+                                    <Setter Property="TextBlock.TextAlignment" Value="Center" />
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="Max" Width="60" Binding="{Binding Max}">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style>
+                                    <Setter Property="TextBlock.TextAlignment" Value="Center" />
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="Min" Width="60" Binding="{Binding Min}">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style>
+                                    <Setter Property="TextBlock.TextAlignment" Value="Center" />
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </DockPanel>
+        </GroupBox>
+
+        <DockPanel Grid.Row="0" Grid.Column="1">
+            <Label DockPanel.Dock="Top" Content="Graph"/>
+            <Grid OpacityMask="#FFB62121" Background="LightGray"
+                  x:Name="CoordinateGrid"
+                  >
+                <Grid>
+                    <TextBlock HorizontalAlignment="Center" Margin="0,60,0,0"  Text="Hello!" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="36" FontFamily="Algerian"  FontStyle="Normal"/>
+                    <TextBlock HorizontalAlignment="Center" Margin="0,144,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="18" Width="330" FontFamily="Calibri" Height="50" LineStackingStrategy="BlockLineHeight" LineHeight="18">
+                        <Run Text="Detailed information will be displayed here."/><LineBreak/><Run Text="Statistics on the steps taken  for the month. "/>
+                    </TextBlock>
+                    <TextBlock HorizontalAlignment="Center" Margin="0,200,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="28" Width="330" FontFamily="Chiller" Height="50" Text="Click on the User to see more details."/>
+                </Grid>
+
+                <ContentControl DataContext="{Binding CoordinateGridVM}" Content="{Binding CoordinateGrid}" 
+                                HorizontalAlignment="Left" VerticalAlignment="Top" Margin="2">
+                </ContentControl>
+            </Grid>
+        </DockPanel>
+    </Grid>
+</UserControl>

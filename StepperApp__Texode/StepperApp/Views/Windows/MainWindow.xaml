@@ -2,51 +2,43 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:fa="http://schemas.fontawesome.com/icons/"
         xmlns:cmd="clr-namespace:StepperApp.Infrastructure.Commands"
+        xmlns:cm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
         xmlns:vm="clr-namespace:StepperApp.ViewModels"
-        xmlns:local="clr-namespace:StepperApp.Views.Windows"
+        xmlns:local="clr-namespace:StepperApp.Views"
+        xmlns:view="clr-namespace:StepperApp.Views"
         xmlns:col="clr-namespace:System.Collections;assembly=mscorlib"
         mc:Ignorable="d"
-        Title="MainWindow"
-        Height="500" Width="900">
-    <Window.DataContext>
-        <vm:MainWindowVM/>
-    </Window.DataContext>
-    <Grid x:Name="MainGrid">
-        <DataGrid x:Name="UsersGrid" AutoGenerateColumns="False" HorizontalAlignment="Left" IsReadOnly="True" SelectionMode="Single" >
-            <DataGrid.Columns>
-                <DataGridTemplateColumn Header="Full Name" Width="130" ClipboardContentBinding="{x:Null}">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <Button Content="{Binding Path=Name}" HorizontalAlignment="Left" BorderBrush="Transparent" Background="Transparent" Name="btnDetails" Click="BtnDetailsClick"/>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-                <DataGridTextColumn x:Name="TextColumnB" Header="Average" Width="60" Binding="{Binding Path=AverageSteps}"></DataGridTextColumn>
-                <DataGridTextColumn Header="Max" Width="65" Binding="{Binding Path=MaxSteps}"></DataGridTextColumn>
-                <DataGridTextColumn Header="Min" Width="65" Binding="{Binding Path=MinSteps}"></DataGridTextColumn>
-                <DataGridTemplateColumn Header="" Width="57" ClipboardContentBinding="{x:Null}">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <Button Content="Save" FontSize="10" HorizontalAlignment="Left" BorderBrush="Transparent" Background="Aqua" Name="btnSave" Click="BtnSaveClick">
-                            </Button>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-            </DataGrid.Columns>
-        </DataGrid>
+        DataContext="{Binding MainWindowVM, Source={StaticResource Locator}}"
+        Title="{Binding Path=Title}"
+        Width="900" Height="500">
 
-        <Grid x:Name="CoordinateGrid">
-            <fa:ImageAwesome Icon="Regular_File" Height="26" Margin="10, 0, 10, 0" Foreground="BlueViolet"/>
-            <TextBlock HorizontalAlignment="Center" Margin="200,60,0,0"  Text="Hello!" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="36" FontFamily="Algerian"  FontStyle="Normal"/>
-            <TextBlock HorizontalAlignment="Left" Margin="400,144,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="18" Width="463" FontFamily="Calibri" Height="50" LineStackingStrategy="BlockLineHeight" LineHeight="18">
-                <Run Text="Detailed information will be displayed here."/><LineBreak/><Run Text="Statistics on the steps taken  for the month. "/>
-            </TextBlock>
-            <TextBlock HorizontalAlignment="Left" Margin="400,200,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="28" Width="463" FontFamily="Chiller" Height="174" Text="Click on the User to see more details."/>
 
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding ShowUsersViewCommand}"/>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+    <DockPanel>
+        <Menu IsMainMenu="True" DockPanel.Dock="Top">
+            <MenuItem Header="Users" Command="{Binding ShowUsersViewCommand}"/>
+            <MenuItem Header="Groups" Command="{Binding ShowGroupsViewCommand}"/>
+            <MenuItem Header="Help">
+                <MenuItem Header="About program"/>
+            </MenuItem>
+        </Menu>
+        <StatusBar DockPanel.Dock="Bottom">
+            <StatusBarItem>Ready</StatusBarItem>
+        </StatusBar>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+                <ContentControl Content="{Binding CurrentModel}" Grid.ColumnSpan="3"/>
         </Grid>
-
-    </Grid>
+    </DockPanel>
 </Window>

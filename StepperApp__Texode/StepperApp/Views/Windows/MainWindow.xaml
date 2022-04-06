@@ -4,11 +4,10 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:fa="http://schemas.fontawesome.com/icons/"
         xmlns:cmd="clr-namespace:StepperApp.Infrastructure.Commands"
         xmlns:cm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
         xmlns:vm="clr-namespace:StepperApp.ViewModels"
-        xmlns:local="clr-namespace:StepperApp.Views"
+        xmlns:local="clr-namespace:StepperApp"
         xmlns:view="clr-namespace:StepperApp.Views"
         xmlns:col="clr-namespace:System.Collections;assembly=mscorlib"
         mc:Ignorable="d"
@@ -23,14 +22,14 @@
         </i:EventTrigger>
     </i:Interaction.Triggers>
     <DockPanel>
-        <Menu IsMainMenu="True" DockPanel.Dock="Top">
+        <Menu>
             <MenuItem Header="Users" Command="{Binding ShowUsersViewCommand}"/>
             <MenuItem Header="Groups" Command="{Binding ShowGroupsViewCommand}"/>
             <MenuItem Header="Help">
                 <MenuItem Header="About program"/>
             </MenuItem>
         </Menu>
-        <StatusBar DockPanel.Dock="Bottom">
+        <StatusBar>
             <StatusBarItem>Ready</StatusBarItem>
         </StatusBar>
         <Grid>

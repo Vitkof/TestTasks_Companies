@@ -98,7 +98,10 @@
             <Grid OpacityMask="#FFB62121" Background="LightGray"
                   x:Name="CoordinateGrid"
                   >
-                <Grid>
+                <Grid Visibility="{Binding DetailsEnabled, 
+                        Converter={StaticResource BoolVisibility},
+                        ConverterParameter=Visibility.Visible,
+                        UpdateSourceTrigger=PropertyChanged}">
                     <TextBlock HorizontalAlignment="Center" Margin="0,60,0,0"  Text="Hello!" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="36" FontFamily="Algerian"  FontStyle="Normal"/>
                     <TextBlock HorizontalAlignment="Center" Margin="0,144,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="18" Width="330" FontFamily="Calibri" Height="50" LineStackingStrategy="BlockLineHeight" LineHeight="18">
                         <Run Text="Detailed information will be displayed here."/><LineBreak/><Run Text="Statistics on the steps taken  for the month. "/>

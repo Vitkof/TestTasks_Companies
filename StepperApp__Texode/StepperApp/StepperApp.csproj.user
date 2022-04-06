@@ -7,6 +7,23 @@
     </ApplicationDefinition>
   </ItemGroup>
   <ItemGroup>
+    <Compile Update="Views\GroupsView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Infrastructure\Commands\AppCommands.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Styles\Main.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Templates\ModelMainView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\GroupsView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="Views\Windows\MainWindow.xaml">
       <SubType>Designer</SubType>
     </Page>

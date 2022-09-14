@@ -15,7 +15,7 @@ namespace BillwerkTestTask
         public decimal Total { get; set; }
 
 
-        public string ToString()
+        public override string ToString()
         {
             return $"{Start} - {End} | PricePerPeriod: {PricePerPeriod} | Duration: {Duration} | Total: {Total}";
         }

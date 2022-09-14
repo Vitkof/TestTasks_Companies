@@ -13,113 +13,131 @@ namespace BillwerkTestTask
 
             foreach(var discount in discounts)
             {
-                sortedDiscounts.Add(discount.Start, discount);
+                try
+                {
+                    sortedDiscounts.Add(discount.Start, discount);
+                }
+                catch
+                {
+                    var value = sortedDiscounts[discount.Start];
+                    if(value.PercentReduction < discount.PercentReduction)
+                    {
+                        sortedDiscounts.Remove(value.Start);
+                        value.Start = discount.End;
+                        sortedDiscounts.Add(value.Start, value);
+                    }
+                    else
+                    {
+                        discount.Start = value.End;
+                    }
+                    sortedDiscounts.Add(discount.Start, discount);
+                }
             }
 
+            DateTime time = subscription.Start;
+            Discount previous = null;
 
-            DateTime startPrev = subscription.Start;
-            DateTime endPrev = billingEnd;
-            decimal percentsPrev = 0m;
+            void AddLine()
+            {
+                var line = GetDiscountLine(subscription, previous);
+                if (line.Duration > 0)
+                    result.Add(line);
+            }
+
+            void Pop()
+            {
+                AddLine();
+                time = previous.End;
+                previous = sortedDiscounts.Values[0];
+                sortedDiscounts.RemoveAt(0);
+            }
 
 
             while(sortedDiscounts.Count > 0)
             {
-                var start = sortedDiscounts.Keys[0];
-                var end = sortedDiscounts.Values[0].End;
-                var percents = sortedDiscounts.Values[0].PercentReduction;
+                Discount current = sortedDiscounts.Values[0];
 
-                if (start < endPrev)
+                if (previous == null)
                 {
-                    if (percentsPrev < percents)  // starts greater discount
+                    previous = new Discount
                     {
-                        
-                        if (percentsPrev != 0m)
-                        {
-                            if (end < endPrev)  
-                            {
-                                var notEndedDiscount = new Discount
-                                {
-                                    Start = end,
-                                    End = endPrev,
-                                    PercentReduction = percentsPrev
-                                };
+                        Start = time,
+                        End = current.Start
+                    };
 
-                                sortedDiscounts.Add(end, notEndedDiscount);
-                            }
-
-                            sortedDiscounts.Remove(startPrev);
-                        }
-
-                        if(startPrev != start)
-                        {
-                            var line = GetDiscountLine(subscription, startPrev, start, percentsPrev);
-                            result.Add(line);
-                        }
-
-                        
-                        percentsPrev = percents;
-                        startPrev = start;
-                        endPrev = end;
-                    }
-                    else if(percentsPrev == percents)
-                    {
-                        if(sortedDiscounts.Count == 1)
-                        {
-                            var line = GetDiscountLine(subscription, start, end, percentsPrev);
-                            result.Add(line);
-                            sortedDiscounts.Remove(start);
-                        }
-                        else
-                        {
-                            sortedDiscounts.Remove(start);
-                        }
-                    }
-                    else
-                    {
-                        if(endPrev < end)
-                        {
-                            var notStartedDiscount = sortedDiscounts.Values[0];
-                            notStartedDiscount.Start = endPrev;
-                            sortedDiscounts.Add(endPrev, notStartedDiscount);
-                        }
-
-                        sortedDiscounts.Remove(start);
-                    }
-
+                    Pop();
                 }
-                else  // there is no bigger discount in this period of time
+                else if (current.Start < previous.End)
                 {
-                    var line = GetDiscountLine(subscription, startPrev, endPrev, percentsPrev);
-                    result.Add(line);
-                    sortedDiscounts.Remove(startPrev);
-
-                    if(start == endPrev)
+                    if (previous.PercentReduction < current.PercentReduction)  // greater discount
                     {
-                        startPrev = start;
-                        endPrev = end;
-                        percentsPrev = percents;
-                    }
-                    else
-                    {
-                        startPrev = endPrev;
-                        endPrev = billingEnd;
-                        percentsPrev = 0m;
-                    }
+                        if (current.End < previous.End)
+                        {
+                            var notEndedDiscount = new Discount
+                            {
+                                Start = current.End,
+                                End = previous.End,
+                                PercentReduction = previous.PercentReduction
+                            };
 
+                            sortedDiscounts.Add(current.End, notEndedDiscount);
+                        }
+
+                        previous.End = current.Start;
+                        Pop();
+                    }
+                    else  // smaller or equal discount
+                    {
+                        if (previous.End < current.End)
+                        {
+                            current.Start = previous.End;
+                            sortedDiscounts.Add(previous.End, current);
+                        }
+                        sortedDiscounts.RemoveAt(0);
+                    }
+                }
+                else if (current.Start == previous.End) // no discount in this period of time
+                {
+                    Pop();
+                }
+                else
+                {
+                    AddLine();
+                    time = previous.End;
+                    previous = null;
                 }
             }
 
-            if(endPrev < billingEnd)
+            if (previous != null)
             {
-                var line = GetSimpleLine(subscription, endPrev, billingEnd);
-                result.Add(line);
+                AddLine();
+            }
+            else
+            {
+                result.Add(BillSubscription(subscription, billingEnd));
+                return result;
+            }
+
+
+            if (previous.End < billingEnd)
+            {
+                previous = new Discount
+                {
+                    Start = previous.End,
+                    End = billingEnd
+                };
+                AddLine();
             }
 
             return result;
         }
 
-        private static InvoiceLine GetDiscountLine(Subscription sub, DateTime start, DateTime end, decimal percents)
+        private static InvoiceLine GetDiscountLine(Subscription sub, Discount discount) 
         {
+            var start = discount.Start;
+            var end = discount.End;
+            var percents = discount.PercentReduction;
+
             var duration = Convert.ToDecimal((end - start).TotalDays);
             var price = sub.PricePerPeriod * (1 - percents / 100);
 
@@ -133,10 +151,6 @@ namespace BillwerkTestTask
             };
         }
 
-        private static InvoiceLine GetSimpleLine(Subscription sub, DateTime start, DateTime end)
-        {
-            return GetDiscountLine(sub, start, end, 0m);
-        }
 
         internal static InvoiceLine BillSubscription(Subscription subscription, DateTime billingEnd)
         {

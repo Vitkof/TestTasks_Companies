@@ -5,7 +5,7 @@ namespace BillwerkTestTask
 {
     class Program
     {
-        static void Main(string[] args)
+        static void Main()
         {
             var fitness = new Subscription 
             { 
@@ -38,10 +38,8 @@ namespace BillwerkTestTask
 
             var invoiceLines = BillingHelper.BillSubscriptionWithDiscounts(fitness, discounts, billingEnd);
 
-            //BillingHelper.BillSubscription(netflix, new DateTime(2022, 1, 20));
+            foreach (var line in invoiceLines)
+                Console.WriteLine(line);
         }
-                
-        
-
     }
 }

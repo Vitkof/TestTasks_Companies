@@ -6,15 +6,31 @@
     <input class="form-control form-control-lg" placeholder="Full Name"
            name="name" #name="ngModel" [(ngModel)]="svc.formData.name"
            required minlength="2" maxlength="100"
-           [class.invalid]="name.invalid && name.touched" />
+           [class.invalid]="name.invalid && name.touched" 
+           appNameValidator
+           [class.is-invalid]="(name.dirty || name.touched) && name.errors?.nameInvalid"/>
+    <span
+      class="invalid-feedback"
+      *ngIf="(name.touched || name.dirty) && name.errors?.nameInvalid"
+    >
+    Name must contain only letters of the latin alphabet
+  </span>
   </div>
   <div class="form-group">
     <label>MOBILE PHONE</label>
     <input type="tel" 
-           class="form-control form-control-lg" placeholder="15 Digit Phone Number"
+           class="form-control form-control-lg" placeholder="12-15 Digits Phone Number"
            name="mobilephone" #mobilephone="ngModel" [(ngModel)]="svc.formData.mobilephone"
            required minlength="12" maxlength="15"
-           [class.invalid]="mobilephone.invalid && mobilephone.touched" />
+           [class.invalid]="mobilephone.invalid && mobilephone.touched"
+           appPhoneNumberValidator
+           [class.is-invalid]="(mobilephone.dirty || mobilephone.touched) && mobilephone.errors?.phoneNumberInvalid" />
+    <span
+      class="invalid-feedback"
+      *ngIf="(mobilephone.touched || mobilephone.dirty) && mobilephone.errors?.phoneNumberInvalid"
+    >
+      Phone number must be 12 digits
+    </span>
     <small>Format: +(37529)*******</small>
   </div>
   <div class="form-group">
@@ -26,7 +42,7 @@
   </div>
   <div class="form-group">
     <label>BIRTH DATE</label>
-    <input type="date" class="form-control form-control-lg" placeholder="дд.мм.гггг"
+    <input type="date" class="form-control form-control-lg" placeholder="dd.MM.yyyy"
            name="birthdate" #birthdate="ngModel" [ngModel]="svc.formData.birthdate | date:'yyyy-MM-dd'"
            (ngModelChange)="svc.formData.birthdate = $event"
            required 
@@ -36,3 +52,5 @@
     <button class="btn btn-info btn-lg btn-block" type="submit" [disabled]="form.invalid">SUBMIT</button>
   </div>
 </form>
+
+
